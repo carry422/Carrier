@@ -29,11 +29,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                FragmentManager fm = getFragmentManager();
+                final FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.content_frame, new SetupFragment());
+                ft.commit();
             }
         });
 
@@ -47,21 +51,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getSupportFragmentManager().addOnBackStackChangedListener(new android.support.v4.app.FragmentManager.OnBackStackChangedListener()
         {
-            public void onBackStackChanged()
-            {
+            public void onBackStackChanged() {
                 Toast.makeText(MainActivity.this, "asdasdasd", Toast.LENGTH_SHORT).show();
-
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         FragmentManager fm = getFragmentManager();
         final FragmentTransaction ft = fm.beginTransaction();
-
         final DBHelper dbHelper = DBHelper.getInstance(getApplicationContext());
         if (dbHelper.getCarList().size() == 0){
             ft.replace(R.id.content_frame, new SetupFragment());

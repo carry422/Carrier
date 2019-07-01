@@ -22,15 +22,18 @@ public class Specialtiesfragment extends android.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_specialties, container, false);
 
         final TextView tv1 = view.findViewById(R.id.tv1);
-        final TextView tv2 = view.findViewById(R.id.tv2);
-        final TextView tv3 = view.findViewById(R.id.tv3);
 
         DBHelper dbHelper = DBHelper.getInstance(getActivity().getApplicationContext());
         ArrayList<Car> arrayList = dbHelper.getCarList();
 
-        tv1.setText("Araç:  " + arrayList.get(0).getTitle());
-        tv2.setText("Model:  " + arrayList.get(0).getModel());
-        tv3.setText("Year:  " + arrayList.get(0).getYear());
+        StringBuilder text = new StringBuilder();
+        for (int i = 0; i<arrayList.size(); i++) {
+            text.append("Araç:  ").append(arrayList.get(0).getTitle())
+                    .append("\nModel:  ").append(arrayList.get(0).getModel())
+                    .append("\nYear:  ").append(arrayList.get(0).getYear())
+                    .append("\n\n");
+        }
+        tv1.setText(text.toString());
 
         return view;
     }
