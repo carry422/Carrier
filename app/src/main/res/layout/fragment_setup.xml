@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SetupFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-
     <TextView
         android:id="@+id/editText"
         android:layout_width="wrap_content"
@@ -17,6 +15,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:gravity="center"
         android:ems="10"
         android:focusable="false"
         android:inputType="textPersonName"
@@ -36,7 +35,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="64dp"
         android:focusable="true"
-        android:text="Araç"
+        android:hint="Araç"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +51,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="140dp"
         android:focusable="true"
-        android:text="Model"
+        android:hint="Model"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,32 +67,20 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="216dp"
         android:focusable="true"
-        android:text="Yıl"
+        android:inputType="numberDecimal"
+        android:hint="Yıl"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText" />
 
     <Button
-        android:id="@+id/gec_button"
+        android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="84dp"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="84dp"
-        android:text="Geç"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yil_text" />
-
-    <Button
-        android:id="@+id/kayit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="84dp"
-        android:layout_marginRight="84dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="160dp"
         android:text="Kayıt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/yil_text" />
-
 </android.support.constraint.ConstraintLayout>

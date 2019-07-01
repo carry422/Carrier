@@ -9,11 +9,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.car.career.database.model.Car;
 import com.car.career.database.model.CarControl;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper sInstance;
     private static final String DATABASE_NAME = "career.db";
     private static Context mainContext;
+
+
+
     public static synchronized DBHelper getInstance(Context context) {
         if (sInstance == null) {
             sInstance = new DBHelper(context.getApplicationContext());
@@ -35,17 +41,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists " + Car.TABLE_NAME);
-        db.execSQL("drop table if exists " + CarControl.TABLE_NAME);
         onCreate(db);
     }
-    public long insertCar(String title,String model,long year){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(Car.COLUMN_TITLE, title);
-        contentValues.put(Car.COLUMN_MODEL,model);
-        contentValues.put(Car.COLUMN_YEAR,year);
-        return db.insert(Car.TABLE_NAME, null, contentValues);
+
+    public void insertCar(String title,String model,long year){
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+
+            values.put(Car.COLUMN_TITLE, title);
+            values.put(Car.COLUMN_MODEL,model);
+            values.put(Car.COLUMN_YEAR,year);
+
+            db.insert(Car.TABLE_NAME, null, values);
+            db.close();
+        }
+        catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
     public long insertCarControl(long model,double yakit,double cost){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -72,6 +85,31 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return car;
+    }
+    public ArrayList<Car> getCarList(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Car car;
+
+        ArrayList<Car> arrayList = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Car.TABLE_NAME, new String[]{});
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                car = new Car(
+                        cursor.getLong(cursor.getColumnIndex(Car.COLUMN_ID)),
+                        cursor.getString(cursor.getColumnIndex(Car.COLUMN_TITLE)),
+                        cursor.getString(cursor.getColumnIndex(Car.COLUMN_CREATED_AT)),
+                        cursor.getString(cursor.getColumnIndex(Car.COLUMN_MODEL)),
+                        cursor.getLong(cursor.getColumnIndex(Car.COLUMN_YEAR))
+                );
+                arrayList.add(car);
+
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+
+        return arrayList;
     }
     public CarControl getCarControl(long id){
         SQLiteDatabase db = this.getReadableDatabase();
