@@ -32,17 +32,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fm = getFragmentManager();
-                final FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.content_frame, new SetupFragment());
-                ft.commit();
-            }
-        });
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -66,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.commit();
         }
         else {
-            ft.replace(R.id.content_frame, new SpecialtiesFragment());
+            ft.replace(R.id.content_frame, new ControlPanelFragment());
             ft.commit();
         }
     }
@@ -117,17 +106,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            ft.replace(R.id.content_frame, new ControlPanelFragment());
         } else if (id == R.id.nav_gallery) {
-
+            ft.replace(R.id.content_frame, new SpecialtiesFragment());
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_bill) {
         } else if (id == R.id.nav_manage) {
 
         }
+        ft.commit();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -27,4 +27,6 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-ml-vision:21.0.0'
     implementation 'junit:junit:4.12'
+    implementation 'org.jsoup:jsoup:1.12.1'
+
 }
