@@ -2,17 +2,19 @@ package com.car.career;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
+import com.car.career.fatura.AddBillActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().addOnBackStackChangedListener(new android.support.v4.app.FragmentManager.OnBackStackChangedListener()
+        getSupportFragmentManager().addOnBackStackChangedListener(new androidx.fragment.app.FragmentManager.OnBackStackChangedListener()
         {
             public void onBackStackChanged() {
                 Toast.makeText(MainActivity.this, "asdasdasd", Toast.LENGTH_SHORT).show();
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.commit();
         }
         else {
-            ft.replace(R.id.content_frame, new Specialtiesfragment());
+            ft.replace(R.id.content_frame, new SpecialtiesFragment());
             ft.commit();
         }
     }
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 
-        ft.replace(R.id.content_frame, new Specialtiesfragment());
+        ft.replace(R.id.content_frame, new SpecialtiesFragment());
         ft.commit();
     }
 
@@ -103,7 +105,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(getApplicationContext(), AddBillActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -121,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else if (id == R.id.nav_slideshow) {
 
+        } else if (id == R.id.nav_bill) {
         } else if (id == R.id.nav_manage) {
 
         }

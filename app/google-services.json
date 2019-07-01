@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "577211217398",
+    "firebase_url": "https://career-7146f.firebaseio.com",
+    "project_id": "career-7146f",
+    "storage_bucket": "career-7146f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577211217398:android:2ada51d872f2d065",
+        "android_client_info": {
+          "package_name": "com.car.career"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577211217398-536ufkdkuchks7mcnel0g9ii1f62l8t9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbifMiet5u1X3XK30g8Gvc1-sdLvdz7gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577211217398-536ufkdkuchks7mcnel0g9ii1f62l8t9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

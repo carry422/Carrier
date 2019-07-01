@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
@@ -17,9 +18,12 @@
             android:icon="@drawable/ic_reminder"
             android:title="Hatırlatıcılar" />
         <item
+            android:id="@+id/nav_bill"
+            android:icon="@drawable/bill"
+            android:title="Faturalarım" />
+        <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="Ayarlar" />
     </group>
-
 </menu>
