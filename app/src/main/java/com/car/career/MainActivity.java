@@ -115,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_bill) {
+            ft.replace(R.id.content_frame, new MYBillsFragment());
+
         } else if (id == R.id.nav_manage) {
 
         }

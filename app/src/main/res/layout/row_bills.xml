@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:paddingLeft="16dp"
+    android:paddingTop="10dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="10dp">
+
+    <com.github.vipulasri.timelineview.TimelineView
+        android:id="@+id/timeline"
+        android:layout_width="37dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/price"
+        android:layout_marginStart="24dp"
+        app:endLineColor="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:lineOrientation="vertical"
+        app:lineStyle="dash"
+        app:lineWidth="2dp"
+        app:markerSize="20dp"
+        app:startLineColor="@color/colorPrimary"
+        tools:layout_editor_absoluteY="-28dp" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="169dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/carname"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/timeline"
+        app:layout_constraintTop_toBottomOf="@+id/carname" />
+
+    <TextView
+        android:id="@+id/carname"
+        android:layout_width="181dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/timeline"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="266dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/timeline"
+        app:layout_constraintTop_toBottomOf="@+id/price" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
