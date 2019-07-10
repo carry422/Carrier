@@ -2,10 +2,12 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fatura.AddBillActivity">
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -45,11 +47,18 @@
             </FrameLayout>
 
             <EditText
-                android:id="@+id/editText_title"
+                android:id="@+id/editText_kurum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Title"
-                android:maxLines="1"
+                android:hint="@string/kurum"
+                tools:ignore="Autofill,TextFields" />
+
+
+            <EditText
+                android:id="@+id/editText_tutar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/tutar"
                 tools:ignore="Autofill,TextFields" />
 
             <LinearLayout
@@ -58,43 +67,49 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editText_startDate"
+                    android:id="@+id/editText_tarih"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Start Date"
+                    android:hint="@string/tarih"
                     android:maxLines="1"
                     tools:ignore="Autofill,TextFields" />
 
                 <ImageButton
-                    android:id="@+id/imageButton_startDate"
+                    android:id="@+id/imageButton_editText_tarih"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="10dp"
+                    android:background="@android:drawable/ic_menu_today"
                     tools:ignore="ContentDescription" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/editText_endDate"
+                    android:id="@+id/editText_saat"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="End Date"
+                    android:hint="@string/saat"
                     android:maxLines="1"
                     tools:ignore="Autofill,TextFields" />
 
                 <ImageButton
-                    android:id="@+id/imageButton_endDate"
+                    android:id="@+id/imageButton_editText_saat"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginStart="10dp"
+                    android:background="@android:drawable/presence_away"
                     tools:ignore="ContentDescription" />
             </LinearLayout>
+
+
+
+
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

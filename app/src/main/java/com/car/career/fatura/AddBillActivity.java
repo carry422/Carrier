@@ -2,6 +2,7 @@ package com.car.career.fatura;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -11,16 +12,23 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.car.career.R;
+import com.car.career.database.DBHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -33,14 +41,29 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AddBillActivity extends AppCompatActivity {
     private final static int PICK_IMAGE = 1001;
 
     private ImageView imageView_bill;
-
+    private Spinner spinner_kategori;
+    private EditText editText_kurum;
+    private EditText editText_tutar;
+    private EditText editText_tarih;
+    private EditText editText_saat;
+    private EditText editText_adres;
+    private ImageButton imageButton_saat;
+    private ImageButton imageButton_tarih;
+    String[] category = { "Market", "Akaryakıt", "Yemek", "Diğer"};
+    String selected_category;
 
 
     @Override
@@ -92,9 +115,29 @@ public class AddBillActivity extends AppCompatActivity {
             return true;
         }
         else if (item.getItemId() == R.id.action_kaydet) {
-            finish();
 
-            return true;
+            if(editText_kurum.getText().toString().equals("")|
+                    editText_tutar.getText().toString().equals("")|
+                    editText_tarih.getText().toString().equals("")|
+                    editText_saat.getText().toString().equals("")
+            ){
+                Toast.makeText(getApplicationContext(), "boş olamaz", Toast.LENGTH_SHORT).show();
+            }else {
+                String kurum = editText_kurum.getText().toString();
+                String tutar = editText_tutar.getText().toString();
+                String tarih = editText_tarih.getText().toString();
+                String saat = editText_saat.getText().toString();
+                String type = selected_category;
+
+
+               // DBHelper dbHelper = DBHelper.getInstance(getApplicationContext());
+                //dbHelper.insertCarControl(5151,52,Double.parseDouble(tutar));
+
+                finish();
+
+                return true;
+
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -117,11 +160,15 @@ public class AddBillActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
-        final EditText editText_startDate = findViewById(R.id.editText_startDate);
-        final EditText editText_endDate = findViewById(R.id.editText_endDate);
 
-        ImageButton imageButton_startDate = findViewById(R.id.imageButton_startDate);
-        imageButton_startDate.setOnClickListener(new View.OnClickListener() {
+        editText_kurum= findViewById(R.id.editText_kurum);
+        editText_tutar = findViewById(R.id.editText_tutar);
+        editText_tarih = findViewById(R.id.editText_tarih);
+        editText_saat = findViewById(R.id.editText_saat);
+
+
+        imageButton_tarih = findViewById(R.id.imageButton_editText_tarih);
+        imageButton_tarih.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar calendar = Calendar.getInstance();
@@ -134,7 +181,7 @@ public class AddBillActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         String result = dayOfMonth + "." + (monthOfYear + 1) + "." + year;
-                        editText_startDate.setText(result);
+                        editText_tarih.setText(result);
                     }
 
                 }, year, month, day);
@@ -144,29 +191,27 @@ public class AddBillActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton imageButton_endDate = findViewById(R.id.imageButton_endDate);
-        imageButton_endDate.setOnClickListener(new View.OnClickListener() {
+        imageButton_saat = findViewById(R.id.imageButton_editText_saat);
+        imageButton_saat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(AddBillActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                String result = dayOfMonth + "." + (monthOfYear + 1) + "." + year;
-                                editText_endDate.setText(result);
-                            }
-
-                 }, year, month, day);
-
-                datePickerDialog.show();
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(AddBillActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        if(selectedMinute<10)
+                            editText_saat.setText( selectedHour + ":0" + selectedMinute);
+                        else
+                            editText_saat.setText( selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
             }
         });
-
         imageView_bill = findViewById(R.id.imageView_bill);
         imageView_bill.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,9 +234,6 @@ public class AddBillActivity extends AppCompatActivity {
     }
 
     public void detectText(Bitmap bitmapImage) {
-        final TextView editText_title = findViewById(R.id.editText_title);
-        final TextView editText_startDate = findViewById(R.id.editText_startDate);
-        final TextView editText_endDate = findViewById(R.id.editText_endDate);
 
         FirebaseApp.initializeApp(this);
         FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(bitmapImage);
@@ -203,9 +245,16 @@ public class AddBillActivity extends AppCompatActivity {
                 if (result.getResult() != null) {
                     List<FirebaseVisionText.TextBlock> list = result.getResult().getTextBlocks();
 
-                    editText_title.setText(list.get(0).getText());
-                    editText_startDate.setText(list.get(1).getText());
-                    editText_endDate.setText(list.get(2).getText());
+                    String kurum = findKurum(list);
+                    String tutar = findTutar(list);
+                    String tarih = findTarih(list);
+                    String saat = findSaat(list);
+
+
+                    editText_kurum.setText(kurum);
+                    editText_tutar.setText(tutar);
+                    editText_tarih.setText(tarih);
+                    editText_saat.setText(saat);
                 }
             }
         });
@@ -216,6 +265,165 @@ public class AddBillActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public String findKurum(List<FirebaseVisionText.TextBlock> textList){
+
+    String [] keywords = {"a.s.","a.s","a.ş.","a.ş","a.$","a.$.","$ti","$tı","şti","sti","stı","ştı","sirketi",
+        "şirketi","sirketı","sırketı","sırketi","şirketı","şırketı","şırketi"
+    };
+
+        for (int i=0;i<textList.size();i++){
+
+        String input=textList.get(i).getText();
+
+        String lowcase_input = input.toLowerCase();
+        for (int j=0;j<keywords.length;j++){
+            if(lowcase_input.contains(keywords[j])){
+
+                String kurum = input.substring(0,lowcase_input.indexOf(keywords[j])+keywords[j].length()).trim();
+
+                return kurum;
+            }
+        }
+    }
+        return null;
+}
+
+    public String findTutar(List<FirebaseVisionText.TextBlock> textList){
+        List<String> tutars= new ArrayList<>();
+
+        String dates_regex = "\\*?(\\d)+,(\\d)+$";
+
+        for (int i=0;i<textList.size();i++){
+
+            String input=textList.get(i).getText();
+            System.out.print(i+")  "+ input +"\n");
+            Matcher m = Pattern.compile(dates_regex).matcher(input);
+            if (m.find()) {
+                tutars.add(m.group());
+            }
+
+        }
+
+        System.out.println("ALL POSSIBLE TUTAR: " + tutars.toString());
+
+        String[] arr = tutars.toArray(new String[tutars.size()]);
+
+        String tutar = findMostNum(arr);
+
+        return tutar;
+    }
+    public String findTarih(List<FirebaseVisionText.TextBlock> textList){
+
+        List<String> dates= new ArrayList<>();
+
+        String dates_regex = "((0[1-9]|[12][0-9]|3[01])[- ,/.]0[1-9]|1[012])[- ,/.](19|20)\\d\\d";
+
+        for (int i=0;i<textList.size();i++){
+
+            String input=textList.get(i).getText();
+            System.out.print(i+")  "+ input +"\n");
+            Matcher m = Pattern.compile(dates_regex).matcher(input);
+            if (m.find()) {
+                dates.add(m.group());
+            }
+
+        }
+
+        System.out.println("ALL POSSIBLE DATES: " + dates.toString());
+
+        String[] arr = dates.toArray(new String[dates.size()]);
+
+        String date = findMostFrequentWord(arr);
+        date=date.replaceAll(" ",".");
+        date=date.replaceAll("-",".");
+        date=date.replaceAll(",",".");
+        date=date.replaceAll("/",".");
+        return date;
+    }
+
+    public String findSaat(List<FirebaseVisionText.TextBlock> textList){
+
+        List<String> hours= new ArrayList<>();
+
+        String hours_regex = "(([01][0-9]|2[0123]) ?[:;/] ?([012345][0-9]))$";
+
+
+
+        for (int i=0;i<textList.size();i++){
+
+            String input=textList.get(i).getText();
+            Matcher m = Pattern.compile(hours_regex).matcher(input);
+            if (m.find()) {
+                hours.add(m.group());
+            }
+
+        }
+
+        System.out.println("ALL POSSIBLE HOURS: " + hours.toString());
+
+        String[] arr = hours.toArray(new String[hours.size()]);
+
+        String hour = findMostFrequentWord(arr);
+        hour=hour.replaceAll(";",":");
+        hour=hour.replaceAll(" ","");
+        hour=hour.replaceAll("/",":");
+        return hour;
+
+
+    }
+
+    static String findMostFrequentWord(String[] arr)
+    {
+
+        // Create HashMap to store word and it's frequency
+        HashMap<String, Integer> hs = new HashMap<String, Integer>();
+
+        // Iterate through array of words
+        for (int i = 0; i < arr.length; i++) {
+            // If word already exist in HashMap then increase it's count by 1
+            if (hs.containsKey(arr[i])) {
+                hs.put(arr[i], hs.get(arr[i]) + 1);
+            }
+            // Otherwise add word to HashMap
+            else {
+                hs.put(arr[i], 1);
+            }
+        }
+
+        // Create set to iterate over HashMap
+        Set<Map.Entry<String, Integer> > set = hs.entrySet();
+        String key = "";
+        int value = 0;
+
+        for (Map.Entry<String, Integer> me : set) {
+            // Check for word having highest frequency
+            if (me.getValue() > value) {
+                value = me.getValue();
+                key = me.getKey();
+            }
+        }
+
+        // Return word having highest frequency
+        return key;
+    }
+    static String findMostNum(String[] arr){
+        String smax="";
+        double  max =0;
+        double temp;
+        for (int i=0;i<arr.length;i++){
+            if(arr[i].contains("*")){
+                temp=Double.parseDouble(arr[i].substring(1).replace(",","."));
+
+            }else{
+                temp=Double.parseDouble(arr[i].replace(",","."));
+            }
+            if (max<=temp)
+                max=temp;
+        }
+        smax=(max+"").replace(".",",");
+        return smax;
     }
 
 }
