@@ -59,6 +59,7 @@ public class AddBillActivity extends AppCompatActivity {
     private EditText editText_tutar;
     private EditText editText_tarih;
     private EditText editText_saat;
+    private EditText editText_yakit;
     private EditText editText_adres;
     private ImageButton imageButton_saat;
     private ImageButton imageButton_tarih;
@@ -119,7 +120,8 @@ public class AddBillActivity extends AppCompatActivity {
             if(editText_kurum.getText().toString().equals("")|
                     editText_tutar.getText().toString().equals("")|
                     editText_tarih.getText().toString().equals("")|
-                    editText_saat.getText().toString().equals("")
+                    editText_saat.getText().toString().equals("")|
+                    editText_yakit.getText().toString().equals("")
             ){
                 Toast.makeText(getApplicationContext(), "boş olamaz", Toast.LENGTH_SHORT).show();
             }else {
@@ -127,11 +129,12 @@ public class AddBillActivity extends AppCompatActivity {
                 String tutar = editText_tutar.getText().toString();
                 String tarih = editText_tarih.getText().toString();
                 String saat = editText_saat.getText().toString();
-                String type = selected_category;
+                String yakit = editText_yakit.getText().toString();
+               // String type = selected_category;
 
 
-               // DBHelper dbHelper = DBHelper.getInstance(getApplicationContext());
-                //dbHelper.insertCarControl(5151,52,Double.parseDouble(tutar));
+                DBHelper dbHelper = DBHelper.getInstance(getApplicationContext());
+                dbHelper.insertCarControl(6565,Double.parseDouble(yakit),Double.parseDouble(tutar));
 
                 finish();
 
@@ -165,6 +168,7 @@ public class AddBillActivity extends AppCompatActivity {
         editText_tutar = findViewById(R.id.editText_tutar);
         editText_tarih = findViewById(R.id.editText_tarih);
         editText_saat = findViewById(R.id.editText_saat);
+        editText_yakit = findViewById(R.id.editText_yakit);
 
 
         imageButton_tarih = findViewById(R.id.imageButton_editText_tarih);
@@ -249,12 +253,14 @@ public class AddBillActivity extends AppCompatActivity {
                     String tutar = findTutar(list);
                     String tarih = findTarih(list);
                     String saat = findSaat(list);
+                    String yakit = findYakit(list);
 
 
                     editText_kurum.setText(kurum);
                     editText_tutar.setText(tutar);
                     editText_tarih.setText(tarih);
                     editText_saat.setText(saat);
+                    editText_yakit.setText(yakit);
                 }
             }
         });
@@ -269,8 +275,8 @@ public class AddBillActivity extends AppCompatActivity {
 
     public String findKurum(List<FirebaseVisionText.TextBlock> textList){
 
-    String [] keywords = {"a.s.","a.s","a.ş.","a.ş","a.$","a.$.","$ti","$tı","şti","sti","stı","ştı","sirketi",
-        "şirketi","sirketı","sırketı","sırketi","şirketı","şırketı","şırketi"
+    String [] keywords = {"a.s.","a.s","a.ş.","a.ş","a.$","a.$.","$i","$ti","$tı","şti","sti","stı","ştı","sirketi",
+        "şirketi","sirketı","sırketı","sırketi","şirketı","şırketı","şırketi","subesi","şubesi"
     };
 
         for (int i=0;i<textList.size();i++){
@@ -311,7 +317,7 @@ public class AddBillActivity extends AppCompatActivity {
         String[] arr = tutars.toArray(new String[tutars.size()]);
 
         String tutar = findMostNum(arr);
-
+        tutar=tutar.replaceAll(",", ".");
         return tutar;
     }
     public String findTarih(List<FirebaseVisionText.TextBlock> textList){
@@ -373,6 +379,44 @@ public class AddBillActivity extends AppCompatActivity {
 
 
     }
+
+    public String findYakit(List<FirebaseVisionText.TextBlock> textList){
+
+        List<String> yakitlar= new ArrayList<>();
+
+        String yakit_regex = "(\\w)+ ?, ?(\\w)+ ?(L|l)(T|t) ?(X|x)?";
+
+
+
+        for (int i=0;i<textList.size();i++){
+
+            String input=textList.get(i).getText();
+            Matcher m = Pattern.compile(yakit_regex).matcher(input);
+            if (m.find()) {
+                yakitlar.add(m.group());
+            }
+
+        }
+
+        System.out.println("ALL POSSIBLE Yakits: " + yakitlar.toString());
+
+        String[] arr = yakitlar.toArray(new String[yakitlar.size()]);
+
+        String yakit = findMostFrequentWord(arr);
+       // 18,180LT x
+        yakit=yakit.toLowerCase();
+        if(yakit.indexOf("l")!=-1) {
+            yakit = yakit.substring(0, yakit.indexOf("l"));
+            yakit = yakit.replaceAll(" ", "");
+            yakit = yakit.replaceAll("o", "0");
+            yakit = yakit.replaceAll(",", ".");
+        }
+
+        return yakit;
+
+
+    }
+
 
     static String findMostFrequentWord(String[] arr)
     {

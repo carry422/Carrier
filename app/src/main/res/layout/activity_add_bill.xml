@@ -52,7 +52,12 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/kurum"
                 tools:ignore="Autofill,TextFields" />
-
+            <EditText
+                android:id="@+id/editText_yakit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Litre"
+                tools:ignore="Autofill,TextFields" />
 
             <EditText
                 android:id="@+id/editText_tutar"

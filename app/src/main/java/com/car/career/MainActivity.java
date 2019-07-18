@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.content_frame, new ControlPanelFragment());
             ft.commit();
         }
+
     }
 
     public void openSpecialtiesFragment() {
