@@ -3,9 +3,12 @@ package com.car.career;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.car.career.database.model.Car;
 import com.car.career.fatura.AddBillActivity;
+import com.car.career.mycars.MyCarsActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.view.View;
@@ -17,9 +20,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.car.career.database.DBHelper;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -46,19 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(MainActivity.this, "asdasdasd", Toast.LENGTH_SHORT).show();
             }
         });
-
-        FragmentManager fm = getFragmentManager();
-        final FragmentTransaction ft = fm.beginTransaction();
-        final DBHelper dbHelper = DBHelper.getInstance(getApplicationContext());
-        if (dbHelper.getCarList().size() == 0){
-            ft.replace(R.id.content_frame, new SetupFragment());
-            ft.commit();
-        }
-        else {
-            ft.replace(R.id.content_frame, new ControlPanelFragment());
-            ft.commit();
-        }
-
     }
 
     public void openSpecialtiesFragment() {
@@ -105,20 +100,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+
         if (id == R.id.nav_camera) {
             ft.replace(R.id.content_frame, new ControlPanelFragment());
-        } else if (id == R.id.nav_gallery) {
-            ft.replace(R.id.content_frame, new SpecialtiesFragment());
-        } else if (id == R.id.nav_slideshow) {
+        }
+        else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(getApplicationContext(), MyCarsActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_bill) {
+        }
+        else if (id == R.id.nav_bill) {
             ft.replace(R.id.content_frame, new MYBillsFragment());
 
-        } else if (id == R.id.nav_manage) {
+        }
+        else if (id == R.id.nav_manage) {
 
         }
         ft.commit();

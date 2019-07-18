@@ -24,7 +24,6 @@ public class SpecialtiesFragment extends android.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_specialties, container, false);
 
-        final TextView tv1 = view.findViewById(R.id.tv1);
 
         DBHelper dbHelper = DBHelper.getInstance(getActivity().getApplicationContext());
         ArrayList<Car> arrayList = dbHelper.getCarList();
@@ -36,7 +35,6 @@ public class SpecialtiesFragment extends android.app.Fragment {
                     .append("\nYear:  ").append(arrayList.get(i).getYear())
                     .append("\n\n");
         }
-        tv1.setText(text.toString());
 
         return view;
     }
@@ -46,10 +44,6 @@ public class SpecialtiesFragment extends android.app.Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.content_frame, new SetupFragment());
-                ft.commit();
             }
         });
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);

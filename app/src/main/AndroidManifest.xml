@@ -28,6 +28,8 @@
         <activity android:name=".fatura.AddBillActivity"
             android:label="Faturalarım"/>
 
+        <activity android:name=".mycars.MyCarsActivity" />
+
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="ocr" />

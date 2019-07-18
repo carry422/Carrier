@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
+<RelativeLayout
     android:id="@+id/linear"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,33 +9,11 @@
     android:orientation="vertical"
     tools:context=".SetupFragment">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="428dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:gravity="center"
-            android:padding="3dp"
-            android:text="Arabanız:"
-            android:textColor="#f3a328"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/tv1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:gravity="center"
-            android:paddingStart="3dp"
-            android:textColor="#2878f3"
-            android:textSize="20sp" />
-
-    </LinearLayout>
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ListView>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -45,12 +22,9 @@
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addCar"
             android:src="@android:drawable/ic_menu_add"
-            srcCompat="@android:drawable/ic_menu_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin" />
-
     </FrameLayout>
-
-</TableLayout>
+</RelativeLayout>
