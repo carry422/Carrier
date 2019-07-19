@@ -3,15 +3,13 @@ package com.car.career;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.car.career.database.model.Car;
+import com.car.career.database.DBHelper;
 import com.car.career.fatura.AddBillActivity;
 import com.car.career.mycars.MyCarsActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.car.career.mycars.SpecialtiesActivity;
 
-import android.view.View;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -20,14 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.car.career.database.DBHelper;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -38,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -54,14 +44,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(MainActivity.this, "asdasdasd", Toast.LENGTH_SHORT).show();
             }
         });
+        DBHelper db=DBHelper.getInstance(getApplicationContext());
+        if (db.getCarList().size()==0)
+            openSpecialtiesFragment();
+
     }
 
     public void openSpecialtiesFragment() {
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-
-        ft.replace(R.id.content_frame, new SpecialtiesFragment());
-        ft.commit();
+        Intent intent = new Intent(getApplicationContext(), SpecialtiesActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -101,11 +92,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
 
         if (id == R.id.nav_camera) {
-            ft.replace(R.id.content_frame, new ControlPanelFragment());
+            Intent intent = new Intent(getApplicationContext(), ControlPanelActivity.class);
+            startActivity(intent);
         }
         else if (id == R.id.nav_gallery) {
             Intent intent = new Intent(getApplicationContext(), MyCarsActivity.class);
@@ -115,13 +105,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
         else if (id == R.id.nav_bill) {
-            ft.replace(R.id.content_frame, new MYBillsFragment());
+            Intent intent = new Intent(getApplicationContext(), BillActivity.class);
+            startActivity(intent);
 
         }
         else if (id == R.id.nav_manage) {
 
         }
-        ft.commit();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

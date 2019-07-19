@@ -1,37 +1,44 @@
 package com.car.career;
 
-
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.app.AlertDialog;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+public class ControlPanelActivity extends AppCompatActivity {
 
-public class ControlPanelFragment extends android.app.Fragment {
-    private FuelActivity fa;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_control_panel, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_control_panel);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
     }
+    private FuelActivity fa;
+
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        FloatingActionButton fab=(FloatingActionButton)getActivity().findViewById( R.id.searchfuel );
+    protected void onResume() {
+        super.onResume();
+        FloatingActionButton fab=(FloatingActionButton)findViewById( R.id.searchfuel );
         fab.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -39,10 +46,10 @@ public class ControlPanelFragment extends android.app.Fragment {
                 fa=new FuelActivity();
                 long plaka=0;
                 String sehir;
-                LayoutInflater layoutInflaterAndroid = LayoutInflater.from(getContext());
+                LayoutInflater layoutInflaterAndroid = LayoutInflater.from(ControlPanelActivity.this);
                 View view2 = layoutInflaterAndroid.inflate(R.layout.check_fuel_money, null);
 
-                AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(getContext());
+                AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(ControlPanelActivity.this);
                 alertDialogBuilderUserInput.setView(view2);
 
                 final EditText inputSehir = view2.findViewById(R.id.editText2);
@@ -55,9 +62,9 @@ public class ControlPanelFragment extends android.app.Fragment {
                             public void onClick(DialogInterface dialogBox, int id) {
                                 try {
                                     ArrayList<Double> list=fa.execute((Long)Long.parseLong(inputplaka.getText().toString())).get();
-                                    LayoutInflater layoutInflaterAndroid2 = LayoutInflater.from(getContext());
+                                    LayoutInflater layoutInflaterAndroid2 = LayoutInflater.from(ControlPanelActivity.this);
                                     View view3 = layoutInflaterAndroid2.inflate(R.layout.show_fuel_money, null);
-                                    AlertDialog.Builder alertDialogBuilderUserInput2 = new AlertDialog.Builder(getContext());
+                                    AlertDialog.Builder alertDialogBuilderUserInput2 = new AlertDialog.Builder(ControlPanelActivity.this);
                                     alertDialogBuilderUserInput2.setView(view3);
                                     TextView t0=view3.findViewById(R.id.textView20);
                                     t0.setText(inputSehir.getText().toString());
@@ -102,5 +109,12 @@ public class ControlPanelFragment extends android.app.Fragment {
 
             }
         });
+    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

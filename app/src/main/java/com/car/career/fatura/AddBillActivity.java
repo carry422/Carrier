@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,13 +67,14 @@ public class AddBillActivity extends AppCompatActivity {
     private ImageButton imageButton_tarih;
     String[] category = { "Market", "Akaryakıt", "Yemek", "Diğer"};
     String selected_category;
+    DBHelper dbHelper ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_bill);
-
+        dbHelper = DBHelper.getInstance(this);
         load();
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -132,9 +135,8 @@ public class AddBillActivity extends AppCompatActivity {
                 String yakit = editText_yakit.getText().toString();
                // String type = selected_category;
 
-
-                DBHelper dbHelper = DBHelper.getInstance(getApplicationContext());
-                dbHelper.insertCarControl(6565,Double.parseDouble(yakit),Double.parseDouble(tutar));
+                dbHelper.insertBill(Double.parseDouble(yakit),kurum,saat,tarih,Double.parseDouble(tutar));
+                //dbHelper.insertBill(6565,Double.parseDouble(yakit),Double.parseDouble(tutar));
 
                 finish();
 

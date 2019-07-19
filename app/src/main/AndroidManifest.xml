@@ -29,6 +29,11 @@
             android:label="Faturalarım"/>
 
         <activity android:name=".mycars.MyCarsActivity" />
+        <activity android:name=".mycars.SpecialtiesActivity" />
+        <activity android:name=".ControlPanelActivity" />
+
+        <activity android:name=".BillActivity" />
+
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"

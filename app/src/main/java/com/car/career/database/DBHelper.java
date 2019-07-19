@@ -2,10 +2,14 @@ package com.car.career.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
+import com.car.career.database.model.Bill;
 import com.car.career.database.model.Car;
 import com.car.career.database.model.CarControl;
 
@@ -35,7 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Car.CREATE_TABLE);
-        db.execSQL(CarControl.CREATE_TABLE);
+        db.execSQL(Bill.CREATE_TABLE);
 
     }
 
@@ -60,13 +64,19 @@ public class DBHelper extends SQLiteOpenHelper {
             exception.printStackTrace();
         }
     }
-    public long insertCarControl(long model,double yakit,double cost){
+    public long insertBill(double litre, String kurum,String time,String date,double cost){
         SQLiteDatabase db = this.getWritableDatabase();
+        SharedPreferences sharedPreferences = mainContext.getSharedPreferences("settings", 0);
+
+        Long d=sharedPreferences.getLong("currentCar",0);
         ContentValues contentValues = new ContentValues();
-        contentValues.put(CarControl.COLUMN_ARAC,model);
-        contentValues.put(CarControl.COLUMN_YAKIT,yakit);
-        contentValues.put(CarControl.COLUMN_COST,cost);
-        return db.insert(CarControl.TABLE_NAME, null, contentValues);
+        contentValues.put(Bill.COLUMN_CARID,d);
+        contentValues.put(Bill.COLUMN_LIT,litre);
+        contentValues.put(Bill.COLUMN_COST,cost);
+        contentValues.put(Bill.COLUMN_TIME,time);
+        contentValues.put(Bill.COLUMN_KURUM,kurum);
+        contentValues.put(Bill.COLUMN_DATE,date);
+        return db.insert(Bill.TABLE_NAME, null, contentValues);
     }
     public Car getCar(long id){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -102,6 +112,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(Car.COLUMN_MODEL)),
                         cursor.getLong(cursor.getColumnIndex(Car.COLUMN_YEAR))
                 );
+
                 arrayList.add(car);
 
                 cursor.moveToNext();
@@ -111,23 +122,77 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return arrayList;
     }
-    public CarControl getCarControl(long id){
+    public Bill getBill(long id){
         SQLiteDatabase db = this.getReadableDatabase();
-        CarControl carControl = null;
+        Bill bill = null;
 
-        try (Cursor cursor = db.query(CarControl.TABLE_NAME, null, CarControl.COLUMN_ID + " = " + id, null, null, null, null)){
+        try (Cursor cursor = db.query(Bill.TABLE_NAME, null, Bill.COLUMN_ID + " = " + id, null, null, null, null)){
             if (cursor.moveToFirst()) {
-                carControl = new CarControl(
-                        cursor.getLong(cursor.getColumnIndex(CarControl.COLUMN_ID)),
-                        cursor.getString(cursor.getColumnIndex(CarControl.COLUMN_CREATED_AT)),
-                        cursor.getLong(cursor.getColumnIndex(CarControl.COLUMN_ARAC)),
-                        cursor.getLong(cursor.getColumnIndex(CarControl.COLUMN_YAKIT)),
-                        cursor.getLong(cursor.getColumnIndex(CarControl.COLUMN_COST))
+                bill = new Bill(
+                        cursor.getLong(cursor.getColumnIndex(Bill.COLUMN_ID)),
+                        cursor.getDouble(cursor.getColumnIndex(Bill.COLUMN_LIT)),
+                        cursor.getString(cursor.getColumnIndex(Bill.COLUMN_KURUM)),
+                        cursor.getString(cursor.getColumnIndex(Bill.COLUMN_TIME)),
+                        cursor.getString(cursor.getColumnIndex(Bill.COLUMN_DATE)),
+                        cursor.getDouble(cursor.getColumnIndex(Bill.COLUMN_COST)),
+                        cursor.getLong(cursor.getColumnIndex(Bill.COLUMN_CARID))
                 );
             }
         }
 
-        return carControl;
+        return bill;
     }
+    public ArrayList<Bill> getBills(long carid){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Bill bill = null;
+        ArrayList<Bill> arrayList = new ArrayList<Bill>();
+
+        try (Cursor cursor = db.query(Bill.TABLE_NAME, null, Bill.COLUMN_CARID + " = " + carid, null, null, null, null)){
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    bill = new Bill(
+                            cursor.getLong(cursor.getColumnIndex(Bill.COLUMN_ID)),
+                            cursor.getDouble(cursor.getColumnIndex(Bill.COLUMN_LIT)),
+                            cursor.getString(cursor.getColumnIndex(Bill.COLUMN_KURUM)),
+                            cursor.getString(cursor.getColumnIndex(Bill.COLUMN_TIME)),
+                            cursor.getString(cursor.getColumnIndex(Bill.COLUMN_DATE)),
+                            cursor.getDouble(cursor.getColumnIndex(Bill.COLUMN_COST)),
+                            cursor.getLong(cursor.getColumnIndex(Bill.COLUMN_CARID))
+                    );
+                    arrayList.add(bill);
+                    cursor.moveToNext();
+
+                }
+            }
+        }
+
+        return arrayList;
+    }
+    public ArrayList<Bill> getBillList(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Bill bill = null;
+        ArrayList<Bill> arrayList = new ArrayList<Bill>();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + Bill.TABLE_NAME, new String[]{});
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                bill = new Bill(
+                        cursor.getLong(cursor.getColumnIndex(Bill.COLUMN_ID)),
+                        cursor.getDouble(cursor.getColumnIndex(Bill.COLUMN_LIT)),
+                        cursor.getString(cursor.getColumnIndex(Bill.COLUMN_KURUM)),
+                        cursor.getString(cursor.getColumnIndex(Bill.COLUMN_TIME)),
+                        cursor.getString(cursor.getColumnIndex(Bill.COLUMN_DATE)),
+                        cursor.getDouble(cursor.getColumnIndex(Bill.COLUMN_COST)),
+                        cursor.getLong(cursor.getColumnIndex(Bill.COLUMN_CARID))
+                        );
+                arrayList.add(bill);
+                cursor.moveToNext();
+
+            }
+        }
+
+        return arrayList;
+    }
+
 
 }
