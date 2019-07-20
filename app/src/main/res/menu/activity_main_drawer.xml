@@ -6,24 +6,26 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_arac_kontrol"
             android:icon="@drawable/ic_local_car_control"
             android:title="Araç Kontrol" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_aracim"
             android:icon="@drawable/ic_my_car"
             android:title="Aracım" />
+
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_reminder"
-            android:title="Hatırlatıcılar" />
-        <item
-            android:id="@+id/nav_bill"
+            android:id="@+id/nav_bills"
             android:icon="@drawable/bill"
             android:title="Faturalarım" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Ayarlar" />
+            android:id="@+id/nav_grafikler"
+            android:icon="@drawable/piechart"
+            android:title="Grafikler" />
+        <item
+            android:id="@+id/nav_hatirlatici"
+            android:icon="@drawable/ic_reminder"
+            android:title="Hatırlatıcılar" />
+
     </group>
 </menu>

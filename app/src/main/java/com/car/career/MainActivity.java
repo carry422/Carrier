@@ -93,23 +93,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_arac_kontrol) {
             Intent intent = new Intent(getApplicationContext(), ControlPanelActivity.class);
             startActivity(intent);
         }
-        else if (id == R.id.nav_gallery) {
+        else if (id == R.id.nav_aracim) {
             Intent intent = new Intent(getApplicationContext(), MyCarsActivity.class);
             startActivity(intent);
         }
-        else if (id == R.id.nav_slideshow) {
+        else if (id == R.id.nav_hatirlatici) {
 
         }
-        else if (id == R.id.nav_bill) {
+        else if (id == R.id.nav_bills) {
             Intent intent = new Intent(getApplicationContext(), BillActivity.class);
             startActivity(intent);
 
         }
-        else if (id == R.id.nav_manage) {
+        else if (id == R.id.nav_grafikler) {
 
         }
 

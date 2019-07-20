@@ -386,7 +386,7 @@ public class AddBillActivity extends AppCompatActivity {
 
         List<String> yakitlar= new ArrayList<>();
 
-        String yakit_regex = "(\\w)+ ?, ?(\\w)+ ?(L|l)(T|t) ?(X|x)?";
+        String yakit_regex = "(\\w)+ ?, ?(\\w)+ ?(L|l|1)(T|t) ?(X|x)?";
 
 
 
